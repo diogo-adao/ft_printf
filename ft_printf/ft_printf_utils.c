@@ -6,7 +6,7 @@
 /*   By: diolivei <diolivei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 19:53:32 by diolivei          #+#    #+#             */
-/*   Updated: 2024/05/06 19:56:28 by diolivei         ###   ########.fr       */
+/*   Updated: 2024/05/07 17:40:26 by diolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,22 +32,22 @@ int	ft_putstr(char *s)
 	return (count);
 }
 
-// ********** %d or %i **********
-int	ft_putnbr(int n, int base)
+// ********** %d / %i / %u **********
+int	ft_putnbr(long n, int base)
 {
-	int	count;
+	int		count;
+	char	*hexa;
 
+	hexa = "0123456789abcdef";
 	count = 0;
-	if (n == -2147483648)
-		count += ft_putstr("-2147483648");
-	else if (n < 0)
+	if (n < 0)
 	{
 		count += ft_putchar('-');
 		n = n * -1;
 	}
-	if (n >= 0 && n <= 9)
-		count += ft_putchar(n + '0');
-	if (n > 9)
+	if (n < base)
+		count += ft_putchar(hexa[n]);
+	else
 	{
 		count += ft_putnbr(n / base, base);
 		count += ft_putnbr(n % base, base);
@@ -55,118 +55,41 @@ int	ft_putnbr(int n, int base)
 	return (count);
 }
 
-// ********** %u **********
-int	ft_putunsigned(unsigned int n, int base)
+// ********** %X **********
+int	ft_putupper(unsigned int n, int base)
 {
-	int	count;
+	int		count;
+	char	*hexa;
 
+	hexa = "0123456789ABCDEF";
 	count = 0;
-	if (n <= 9)
-		count += ft_putchar(n + '0');
-	if (n > 9)
+	if (n < 16)
+		count += ft_putchar(hexa[n]);
+	else
 	{
-		count += ft_putunsigned(n / base, base);
-		count += ft_putunsigned(n % base, base);
+		count += ft_putupper(n / base, base);
+		count += ft_putupper(n % base, base);
 	}
 	return (count);
 }
 
-// ********** %x **********
-static int	ft_nbrlen(unsigned int n)
+// ********** %p **********
+int	ft_putpointer(unsigned long n, int base)
 {
-	int	count;
+	int		count;
+	char	*hexa;
 
+	hexa = "0123456789abcdef";
 	count = 0;
 	if (n == 0)
-		count = 1;
-	while (n)
-	{
-		n = n / 10;
-		count++;
-	}
-	return (count);
-}
-
-static char	*ft_strtmp(char *tmp, unsigned int n, int base, int i, char *hexa)
-{
-	tmp[i] = '\0';
-	while (i-- && n != 0)
-	{
-		tmp[i] = hexa[n % base];
-		n = n / base;
-	}
-	tmp += i + 1;
-	return (tmp);
-}
-
-int	ft_puthexa(unsigned int n, int base)
-{
-	int		i;
-	int		count;
-	char	*tmp;
-	char	*tmp_start;
-	char	*hexa;
-
-	hexa = "0123456789abcdef";
-	count = 0;
-	if (n <= 15)
-	{
+		return (write(1, "(nil)", 5));
+	count += write(1, "0x", 2);
+	if (n < 16)
 		count += ft_putchar(hexa[n]);
-		return (count);
-	}
-	i = ft_nbrlen(n);
-	tmp = (char *)malloc(sizeof(char) * (i + 1));
-	if (!tmp)
-		return (0);
-	tmp_start = tmp;
-	tmp = ft_strtmp(tmp, n, base, i, hexa);
-	count += ft_putstr(tmp);
-	free(tmp_start);
-	return (count);
-}
-
-// ********** %X **********
-static int	ft_toupper(char *tmp)
-{
-	int	count;
-
-	count = 0;
-	while (*tmp)
+	else
 	{
-		if (*tmp >= 'a' && *tmp <= 'z')
-		{
-			*tmp = *tmp - 32;
-			count += write(1, tmp, 1);
-		}
-		else
-			count += write(1, tmp, 1);
-		tmp++;
+		count += ft_putnbr(n / base, base);
+		count += ft_putnbr(n % base, base);
 	}
-	return (count);
-}
-
-int	ft_puthexaupper(unsigned int n, int base)
-{
-	int		i;
-	int		count;
-	char	*tmp;
-	char	*tmp_start;
-	char	*hexa;
-
-	hexa = "0123456789abcdef";
-	count = 0;
-	if (n <= 15)
-	{
-		count += ft_putchar(hexa[n]);
-		return (count);
-	}
-	i = ft_nbrlen(n);
-	tmp = (char *)malloc(sizeof(char) * (i + 1));
-	if (!tmp)
-		return (0);
-	tmp_start = tmp;
-	tmp = ft_strtmp(tmp, n, base, i, hexa);
-	count += ft_toupper(tmp);
-	free(tmp_start);
 	return (count);
 }
