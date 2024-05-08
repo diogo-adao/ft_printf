@@ -32,7 +32,7 @@ int	ft_putstr(char *s)
 	return (count);
 }
 
-// ********** %d / %i / %u **********
+// ********** %d / %i / %u / %x **********
 int	ft_putnbr(long n, int base)
 {
 	int		count;
