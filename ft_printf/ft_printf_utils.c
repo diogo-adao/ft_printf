@@ -6,7 +6,7 @@
 /*   By: diolivei <diolivei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 19:53:32 by diolivei          #+#    #+#             */
-/*   Updated: 2024/05/07 17:40:26 by diolivei         ###   ########.fr       */
+/*   Updated: 2024/05/09 19:23:31 by diolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,10 @@ int	ft_putstr(char *s)
 	int	count;
 
 	count = 0;
+	 if (s == NULL) {
+        count += write(1, "(null)", 6);
+        return (count);
+    }
 	while (*s)
 	{
 		count += write(1, s, 1);
