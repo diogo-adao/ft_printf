@@ -6,7 +6,7 @@
 /*   By: diolivei <diolivei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 19:53:32 by diolivei          #+#    #+#             */
-/*   Updated: 2024/05/09 19:23:31 by diolivei         ###   ########.fr       */
+/*   Updated: 2024/08/27 15:45:16 by diolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,11 @@ int	ft_putstr(char *s)
 	int	count;
 
 	count = 0;
-	 if (s == NULL) {
-        count += write(1, "(null)", 6);
-        return (count);
-    }
+	if (s == NULL)
+	{
+		count += write(1, "(null)", 6);
+		return (count);
+	}
 	while (*s)
 	{
 		count += write(1, s, 1);
@@ -44,7 +45,6 @@ int	ft_putnbr(long n, int base)
 
 	hexa = "0123456789abcdef";
 	count = 0;
-
 	if (n == -2147483648)
 	{
 		count += ft_putchar('-');
